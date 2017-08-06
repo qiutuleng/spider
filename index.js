@@ -1,6 +1,7 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 const watch = require('watchjs').watch;
+const Article = require('./Models/Article');
 
 let domain = 'https://laravel-news.com';
 let articleListPage = '/category/laravel-5.5';
@@ -18,6 +19,10 @@ let data = {
 
 watch(data.articles, 'urls', (prop, action, value, old_value) => {
     getArticle(value[0]);
+});
+
+watch(data.articles, 'list', (prop, action, value, old_value) => {
+    Article.create(value[0])
 });
 
 axios.get(domain + articleListPage)
