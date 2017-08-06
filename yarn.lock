@@ -168,3 +168,7 @@ string_decoder@~1.0.3:
 util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
+
+watchjs@^0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/watchjs/-/watchjs-0.0.0.tgz#e1208f25b315b9a2aa6a89e880c9c689cfba1756"
