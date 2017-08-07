@@ -1,16 +1,7 @@
-const MySQL = require('mysql');
-let connection = MySQL.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'spider'
-});
+const mysql = require('../MySQL/MySQL.js');
+const BaseModel = {};
 
-connection.connect(error => {
-    if (error) throw error;
-});
-
-connection.create = (table, object) => {
+BaseModel.create = (table, object) => {
     let columns = [];
     let values = '';
     for (let item in object) {
@@ -21,7 +12,7 @@ connection.create = (table, object) => {
     }
     values = values.slice(0, -1);
     return new Promise((resolve, reject) => {
-        connection.query(`INSERT INTO ${table} (${columns.join(',')}) VALUES (${values})`, (error, result) => {
+        mysql.query(`INSERT INTO ${table} (${columns.join(',')}) VALUES (${values})`, (error, result) => {
             if (error) {
                 return reject(error);
             } else {
@@ -31,4 +22,16 @@ connection.create = (table, object) => {
     })
 };
 
-module.exports = connection;
+BaseModel.all = table => {
+    return new Promise((resolve, reject) => {
+        mysql.query(`select * from ${table}`, (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+};
+
+module.exports = BaseModel;

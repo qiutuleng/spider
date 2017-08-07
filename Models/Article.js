@@ -1,18 +1,15 @@
-const mysql = require('./BaseModel.js');
+const BaseModel = require('./BaseModel.js');
 const articles = {};
 
-articles.all = new Promise((resolve, reject) => {
-    mysql.query(`select * from articles`, (error, result) => {
-        if (error) {
-            reject(error);
-        } else {
-            resolve(result);
-        }
-    });
-});
+const table = 'articles';
 
 articles.create = (object) => {
-    return mysql.create('articles', object);
+    console.log('Saving the article: ' + object.title);
+    return BaseModel.create('articles', object);
+};
+
+articles.all = () => {
+    return BaseModel.all(table);
 };
 
 module.exports = articles;

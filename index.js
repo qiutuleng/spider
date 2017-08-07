@@ -22,9 +22,14 @@ watch(data.articles, 'urls', (prop, action, value, old_value) => {
 });
 
 watch(data.articles, 'list', (prop, action, value, old_value) => {
-    Article.create(value[0])
+    let article = value[0];
+    Article.create(article)
+        .then(result => {
+            console.log('Saved the article: ' + article.title);
+        });
 });
 
+console.log('Downloading article list: ' + domain + articleListPage);
 axios.get(domain + articleListPage)
     .then(response => {
         let $ = cheerio.load(response.data);
@@ -35,6 +40,7 @@ axios.get(domain + articleListPage)
     });
 
 let getArticle = url => {
+    console.log('Downloading article: ' + url);
     axios.get(url)
         .then(response => {
             let $ = cheerio.load(response.data);
