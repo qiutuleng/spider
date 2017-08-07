@@ -48,12 +48,14 @@ const getArticle = url => {
     axios.get(url)
         .then(response => {
             let $ = cheerio.load(response.data);
+            let title = $(articleTitleSelector).text();
+            let content = $(articleContentSelector).html();
+            console.log('Downloaded article: ' + title);
             let article = {
-                title: $(articleTitleSelector).text(),
-                content: $(articleContentSelector).html()
+                title,
+                content
             };
             data.articles.list.push(article);
-            console.log('Downloaded article: ' + article.title);
         });
 };
 
