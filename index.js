@@ -29,19 +29,21 @@ watch(data.articles, 'list', (prop, action, value, old_value) => {
         });
 });
 
-console.log('Downloading article list: ' + domain + articleListPage);
-axios.get(domain + articleListPage)
-    .then(response => {
-        let $ = cheerio.load(response.data);
-        let list = $(articleListSelector);
-        for (let i = 0; i < list.length; i++) {
-            let href = list.eq(i).attr('href');
-            let url = href.indexOf('http') >= 0 ? href : domain + href;
-            data.articles.urls.push(url);
-        }
-    });
+let getArticleList = (url) => {
+    console.log('Downloading article list: ' + url);
+    axios.get(url)
+        .then(response => {
+            let $ = cheerio.load(response.data);
+            let list = $(articleListSelector);
+            for (let i = 0; i < list.length; i++) {
+                let href = list.eq(i).attr('href');
+                let url = href.indexOf('http') >= 0 ? href : domain + href;
+                data.articles.urls.push(url);
+            }
+        });
+};
 
-let getArticle = url => {
+const getArticle = url => {
     console.log('Downloading article: ' + url);
     axios.get(url)
         .then(response => {
@@ -51,5 +53,8 @@ let getArticle = url => {
                 content: $(articleContentSelector).html()
             };
             data.articles.list.push(article);
+            console.log('Downloaded article: ' + article.title);
         });
 };
+
+getArticleList(domain + articleListPage);
