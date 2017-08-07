@@ -35,7 +35,9 @@ axios.get(domain + articleListPage)
         let $ = cheerio.load(response.data);
         let list = $(articleListSelector);
         for (let i = 0; i < list.length; i++) {
-            data.articles.urls.push(domain + list.eq(i).attr('href'));
+            let href = list.eq(i).attr('href');
+            let url = href.indexOf('http') >= 0 ? href : domain + href;
+            data.articles.urls.push(url);
         }
     });
 
