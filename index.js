@@ -4,11 +4,12 @@ const watch = require('watchjs').watch;
 const Article = require('./Models/Article');
 
 let domain = 'https://laravel-news.com';
-let articleListPage = '/category/laravel-5.5';
+let articleListPage = '/category/laravel-tutorials';
 
-let articleListSelector = 'a.card';
+let articleListSelector = 'div.pb2 a.card';
 let articleTitleSelector = 'h1.post__title';
 let articleContentSelector = 'div.col.lg-col-9';
+let nextPageSelector = 'nav.pagination>a.arrow--right';
 
 let data = {
     articles: {
@@ -29,6 +30,10 @@ watch(data.articles, 'list', (prop, action, value, old_value) => {
         });
 });
 
+const getCorrectUrl = url => {
+    return url.indexOf('http') === 0 ? url : domain + url;
+};
+
 let getArticleList = (url) => {
     console.log('Downloading article list: ' + url);
     axios.get(url)
@@ -36,10 +41,20 @@ let getArticleList = (url) => {
             let $ = cheerio.load(response.data);
             let list = $(articleListSelector);
             for (let i = 0; i < list.length; i++) {
-                let href = list.eq(i).attr('href');
-                let url = href.indexOf('http') >= 0 ? href : domain + href;
+                let url = getCorrectUrl(list.eq(i).attr('href'));
                 data.articles.urls.push(url);
             }
+
+            let nextPage = $(nextPageSelector);
+            let nextPageHref = nextPage.attr('href');
+            if (!!nextPageHref) {
+                let nextPageUrl = getCorrectUrl(nextPageHref);
+                getArticleList(nextPageUrl);
+            }
+        })
+        .catch(error => {
+            console.log('Article List Error URL: ' + url);
+            throw error;
         });
 };
 
@@ -56,6 +71,10 @@ const getArticle = url => {
                 content
             };
             data.articles.list.push(article);
+        })
+        .catch(error => {
+            console.log('Article Error URL: ' + url);
+            throw error;
         });
 };
 
