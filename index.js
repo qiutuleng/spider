@@ -1,3 +1,4 @@
+require('./bootstrap.js');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const watch = require('watchjs').watch;
