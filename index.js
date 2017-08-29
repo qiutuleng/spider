@@ -13,17 +13,10 @@ let articleListPage = '/category/laravel-tutorials'; // 要抓取的网页地址
 
 /**
  * 文章列表页的文章列表selector
- * example dom: <ul class="article_list"><li>文章标题1</li><li>文章标题2</li></ul>
- * example value: ul.article_list
- */
-let articleListSelector = 'div.pb2 a.card';
-
-/**
- * 文章列表页的文章标题链接selector,目前仅支持a链接
- * example dom: <ul class="article_list"><li><a>文章标题1</a></li></ul>
+ * example dom: <ul class="article_list"><li><a>文章标题1</a></li><li><a>文章标题2</a></li></ul>
  * example value: ul.article_list>li>a
  */
-let articleTitleSelector = 'h1.post__title';
+let articleListSelector = 'div.pb2 a.card';
 
 /**
  * 文章列表页的文章列表分页,目前仅支持a链接
@@ -31,6 +24,13 @@ let articleTitleSelector = 'h1.post__title';
  * example value: ul.article_list>li>a
  */
 let nextPageSelector = 'ul.article_paginate>li>a';
+
+/**
+ * 文章详情页的文章标题selector
+ * example dom: <h1 class="article_title">文章标题1</h1>
+ * example value: h1.article_title
+ */
+let articleTitleSelector = 'h1.post__title';
 
 /**
  * 文章详情页的文章内容Selector,目前不支持单文章分页
