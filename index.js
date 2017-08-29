@@ -4,13 +4,40 @@ const cheerio = require('cheerio');
 const watch = require('watchjs').watch;
 const Article = require('./Models/Article');
 
-let domain = 'https://laravel-news.com';
-let articleListPage = '/category/laravel-tutorials';
+let domain = 'https://laravel-news.com'; // 要抓取的网站域名
+let articleListPage = '/category/laravel-tutorials'; // 要抓取的网页地址，不带域名
 
+/**
+ * selector均使用JQuery的语法
+ */
+
+/**
+ * 文章列表页的文章列表selector
+ * example dom: <ul class="article_list"><li>文章标题1</li><li>文章标题2</li></ul>
+ * example value: ul.article_list
+ */
 let articleListSelector = 'div.pb2 a.card';
+
+/**
+ * 文章列表页的文章标题链接selector,目前仅支持a链接
+ * example dom: <ul class="article_list"><li><a>文章标题1</a></li></ul>
+ * example value: ul.article_list>li>a
+ */
 let articleTitleSelector = 'h1.post__title';
+
+/**
+ * 文章列表页的文章列表分页,目前仅支持a链接
+ * example dom: <ul class="article_paginate"><li><a>第一页</a><a>第二页</a></li></ul>
+ * example value: ul.article_list>li>a
+ */
+let nextPageSelector = 'ul.article_paginate>li>a';
+
+/**
+ * 文章详情页的文章内容Selector,目前不支持单文章分页
+ * example dom: <div class="article_content"><p>文章内容</p></ul>
+ * example value: .article_content
+ */
 let articleContentSelector = 'div.col.lg-col-9';
-let nextPageSelector = 'nav.pagination>a.arrow--right';
 
 let data = {
     articles: {
